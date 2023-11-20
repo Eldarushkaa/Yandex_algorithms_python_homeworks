@@ -1,7 +1,7 @@
 n = int(input())
 originals = dict()
 for i in range(n):
-    song = input().split(' | ')
+    song = list(map(lambda x: x.lstrip().rstrip(), input().split('|')))
     if song[0] in originals and song[2] < originals[song[0]][1] or song[0] not in originals:
         originals[song[0]] = song[1:]
 
