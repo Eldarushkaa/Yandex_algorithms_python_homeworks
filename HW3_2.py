@@ -1,6 +1,3 @@
-from collections import defaultdict
-
-
 n, s, f = map(int, input().split())
 graph = [dict() for i in range(n + 1)]
 for i in range(1, n + 1):
