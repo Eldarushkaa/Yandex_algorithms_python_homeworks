@@ -1,20 +1,19 @@
-n, s, f = map(int, input().split())
+n = int(input())
+s, f = map(int, input().split())
+k = int(input())
 graph = [dict() for i in range(n + 1)]
-for i in range(1, n + 1):
-    for j, dist in enumerate(map(int, input().split()), start=1):
-        if dist != -1 and i != j:
-            graph[i][j] = dist
-visited_from = [-1] * (n + 1)
+for i in range(k):
+    a, at, b, bt = map(int, input().split())
+    graph[a][b] = (at, bt)
 shortest_path = [float('inf')] * (n + 1)
 shortest_path[s] = 0
 deep = [{s}]
 while deep[-1]:
     deep.append(set())
     for start in deep[-2]:
-        for next_v, dist in graph[start].items():
-            if dist + shortest_path[start] < shortest_path[next_v]:
-                shortest_path[next_v] = shortest_path[start] + dist
-                visited_from[next_v] = start
+        for next_v, departure, arrive in map((lambda x: (x[0], *x[1])), graph[start].items()):
+            if departure >= shortest_path[start] and arrive < shortest_path[next_v]:
+                shortest_path[next_v] = arrive
                 deep[-1].add(next_v)
     deep.pop(0)
 if shortest_path[f] == float('inf'):
