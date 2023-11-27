@@ -53,7 +53,7 @@ class Tree:
     def _view_tree(self, node):
         if node:
             self._view_tree(node.l)
-            print((node.v, node.w), end = " ")
+            print((node.v, node.w), end=" ")
             self._view_tree(node.r)
 
     def check1(self, n):
@@ -66,39 +66,37 @@ class Tree:
         yield from self.check1(self.root)
 
 
-gag = Tree()
-for i in range(1, 5):
-    gag.add(2*i, i ** 2)
-gag.view_tree()
-print()
-
-for v in gag:
-    print(v)
-
-
-def permutation(target, current_sum, *args):
-    global shortest_path
-    for i in range(len(args)):
-        if current_sum + args[i] == target and 2 * len(lengths) - len(args) + 1 < shortest_path:
-            shortest_path = 2 * len(lengths) - len(args) + 1
-            yield str(args[i])
-        elif current_sum + args[i] < target:
-            for seq in permutation(target, current_sum + args[i], *args[:i], *args[i+1:]):
-                yield str(args[i]) + ' ' + seq
+def search_insert(nums, target):
+    if nums[0][0] > target:
+        return -1
+    if nums[-1][0] < target:
+        return len(nums) - 1
+    left = 0
+    right = len(nums) - 1
+    while left <= right:
+        cur = (left + right) // 2
+        if nums[cur][0] == target:
+            return cur - 1
+        elif nums[cur][0] < target < nums[cur + 1][0]:
+            return cur
+        elif nums[cur][0] < target:
+            left = cur + 1
+        elif nums[cur + 1][0] > target:
+            right = cur
 
 
 n, m = map(int, input().split())
-lengths = list(map(int, input().split()))
-shortest_path = len(lengths) * 2 + 1
-if sum(lengths) * 2 < n:
-    print(-1)
-else:
-    option = ''
-    for row in permutation(n, 0, *lengths, *lengths):
-        option = row
-
-    if shortest_path == len(lengths) * 2 + 1:
-        print(0)
-    else:
-        print(shortest_path)
-        print(option)
+cities = [dict() for i in range(n + 1)]
+for i in range(m):
+    a, b, t, w = map(int, input().split())
+    cities[a][b] = (t, w)
+    cities[b][a] = (t, w)
+shortest_path = [Tree() for i in range(n + 1)]
+shortest_path[1].add(0, float('inf'))
+deep = [{1}]
+while deep[-1]:
+    deep.append(set())
+    for start in deep[-2]:
+        for dest in cities[start]:
+            for dif_time in shortest_path[start]:
+                if
